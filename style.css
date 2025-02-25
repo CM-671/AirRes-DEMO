@@ -1,0 +1,156 @@
+/* ✅ Allow the page to scroll properly */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* ✅ Ensure the container is fully visible */
+.container {
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 90%; /* Increase width to allow more space */
+    max-width: 1200px; /* Adjust to fit more cards in a row */
+    text-align: center;
+}
+
+/* ✅ Align form elements to the left */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+/* ✅ Style labels */
+label {
+    text-align: left;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* ✅ Style Depart & Return Date labels */
+.date-label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* ✅ Ensure both Depart Date & Return Date input fields have the same width & height */
+.date-input {
+    width: 200px; /* Fixed width */
+    height: 40px; /* Fixed height */
+    padding: 8px; /* Add padding for consistency */
+    font-size: 16px; /* Ensure same font size */
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: white;
+    outline: none;
+}
+
+/* ✅ Add hover effect for better UX */
+.date-input:hover {
+    border-color: #007bff;
+}
+
+/* ✅ Ensure the date input fields are aligned properly */
+.date-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ✅ Ensure buttons and input fields are spaced properly */
+input, button {
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+/* ✅ Round Trip Checkbox Styling */
+.trip-type {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.trip-type input {
+    transform: scale(1.2); /* Make checkbox bigger */
+    cursor: pointer;
+}
+
+/* ✅ Button styling */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ Ensure the flight results container displays flights in a row */
+#flightResults {
+    display: flex;
+    flex-direction: column; /* Stack results vertically */
+    align-items: center; /* Center the content */
+    gap: 15px; /* Space between elements */
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ✅ Container for Departing & Returning Flights */
+#departing-flights-container, #returning-flights-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Space between flight cards */
+    justify-content: center; /* Center flight cards */
+    margin-top: 15px; /* Space below section title */
+    padding: 10px;
+}
+
+/* ✅ Individual flight card */
+.flight-card {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Adjust width to make cards look neat */
+    text-align: center;
+}
+
+/* ✅ Flashing red effect for low seat availability */
+.flashing-red {
+    color: red;
+    font-weight: bold;
+    animation: flash 1s infinite;
+}
+
+@keyframes flash {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* ✅ Hide the return date container by default */
+#returnDateContainer {
+    display: none;
+}

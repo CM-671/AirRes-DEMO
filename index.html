@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulated Flight Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Booking Flight Search</h1>
+
+        <form id="flightForm">
+            <label for="origin">Origin:</label>
+            <input type="text" id="origin" placeholder="Enter city or airport code">
+
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" placeholder="Enter city or airport code">
+
+            <div class="date-container">
+                <label for="date" class="date-label">Departure Date:</label>
+                <input type="date" id="date" name="date" class="date-input" required>
+            </div>
+
+            <!-- Round Trip Checkbox -->
+            <div class="trip-type">
+                <input type="checkbox" id="roundTrip">
+                <label for="roundTrip">Round Trip</label>
+            </div>
+
+            <div id="returnDateContainer">
+                <label for="returnDate" class="date-label">Return Date:</label>
+                <input type="date" id="returnDate" name="returnDate" class="date-input">
+            </div>
+
+            <button type="submit">Search Flights</button>
+        </form>
+
+        <div id="flightResults"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
