@@ -62,13 +62,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (this.checked) {
             returnDateContainer.style.display = "block"; // Show return date field
             returnDateInput.disabled = false; // Enable return date selection
-            returnDateInput.required = true; // Make return date required
-            returnDateInput.setAttribute("min", departureDateInput.value); // Ensure return date is after departure date
         } else {
             returnDateContainer.style.display = "none"; // Hide return date field
             returnDateInput.value = ""; // Clear return date value
             returnDateInput.disabled = true; // Disable return date selection
-            returnDateInput.required = false; // Make return date optional
         }
     });
 
@@ -83,8 +80,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const returnDate = returnDateInput.value;
         const isRoundTrip = roundTripCheckbox.checked;
 
-        const originCode = originInput.toUpperCase();
-        const destinationCode = destinationInput.toUpperCase();
+        const originCode = originInput ? originInput.toUpperCase() : null;
+        const destinationCode = destinationInput ? destinationInput.toUpperCase() : null;
 
         try {
             document.getElementById("flightResults").innerHTML = `<p>⏳ Searching for flights...</p>`;
@@ -96,19 +93,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const matchingFlights = allFlights.filter(flight => {
                 const flightDateFormatted = extractDate(flight.departure_time);
                 console.log(`🔎 Checking: ${flight.origin} → ${flight.destination} on ${flightDateFormatted}`);
-                
-                return flight.origin.toUpperCase() === originCode &&
-                       flight.destination.toUpperCase() === destinationCode &&
-                       flightDateFormatted === departureDate;
+
+                return (!originCode || flight.origin.toUpperCase() === originCode) &&
+                       (!destinationCode || flight.destination.toUpperCase() === destinationCode) &&
+                       (!departureDate || flightDateFormatted === departureDate);
             });
 
             let roundTripFlights = [];
             if (isRoundTrip && returnDate) {
                 roundTripFlights = allFlights.filter(flight => {
                     const flightDateFormatted = extractDate(flight.departure_time);
-                    return flight.origin.toUpperCase() === destinationCode &&
-                           flight.destination.toUpperCase() === originCode &&
-                           flightDateFormatted === returnDate;
+                    return (!destinationCode || flight.origin.toUpperCase() === destinationCode) &&
+                           (!originCode || flight.destination.toUpperCase() === originCode) &&
+                           (!returnDate || flightDateFormatted === returnDate);
                 });
             }
 
@@ -124,22 +121,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ✅ Function to display flights in HTML
 function displayResults(departureFlights, returnFlights, origin, destination, departureDate, returnDate, isRoundTrip) {
-    let resultsHTML = `<h2>Flights from ${origin} to ${destination} on ${departureDate}</h2>`;
+    let resultsHTML = `<h2>Flight Search Results</h2>`;
 
-    if (departureFlights.length === 0) {
-        resultsHTML += `<p>⚠️ No departure flights found.</p>`;
+    if (departureFlights.length === 0 && (!isRoundTrip || returnFlights.length === 0)) {
+        resultsHTML += `<p>⚠️ No flights found matching your criteria.</p>`;
     } else {
-        departureFlights.forEach(flight => {
-            resultsHTML += generateFlightHTML(flight);
-        });
-    }
+        if (departureFlights.length > 0) {
+            resultsHTML += `<h3>Departure Flights</h3>`;
+            departureFlights.forEach(flight => {
+                resultsHTML += generateFlightHTML(flight);
+            });
+        }
 
-    if (isRoundTrip && returnDate) {
-        resultsHTML += `<h2>Return Flights from ${destination} to ${origin} on ${returnDate}</h2>`;
-
-        if (returnFlights.length === 0) {
-            resultsHTML += `<p>⚠️ No return flights found.</p>`;
-        } else {
+        if (isRoundTrip && returnFlights.length > 0) {
+            resultsHTML += `<h3>Return Flights</h3>`;
             returnFlights.forEach(flight => {
                 resultsHTML += generateFlightHTML(flight);
             });
@@ -151,15 +146,20 @@ function displayResults(departureFlights, returnFlights, origin, destination, de
 
 // ✅ Helper function to generate flight HTML
 function generateFlightHTML(flight) {
+  
     return `
         <div class="flight-card">
             <p><strong>Flight Number:</strong> ${flight.flight_number}</p>
             <p><strong>Airline:</strong> ${flight.airline}</p>
             <p><strong>Departure:</strong> ${new Date(flight.departure_time).toLocaleString()}</p>
-            <p><strong>Arrival:</strong> ${flight.arrival_time}</p>
+            <p><strong>Departure Airport:</strong> ${flight.origin}</p>
+            <p><strong>Destination Airport:</strong> ${flight.destination}</p>
+            <p><strong>Arrival Time:</strong> ${flight.arrival_time}</p>
             <p><strong>Duration:</strong> ${flight.duration} hours</p>
             <p><strong>Seats Available:</strong> ${flight.seat_availability}</p>
             <p><strong>Cost:</strong> $${flight.price}</p>
         </div>
     `;
 }
+
+
